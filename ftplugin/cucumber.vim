@@ -16,9 +16,10 @@ let b:undo_ftplugin = "setl fo< com< cms<"
 let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
-  nmap <silent><buffer> <C-]>  :<C-U>exe <SID>jump('edit')<CR>
-  nmap <silent><buffer> <C-W>] :<C-U>exe <SID>jump('split')<CR>
-  nmap <silent><buffer> <C-W>} :<C-U>exe <SID>jump('pedit')<CR>
+  nmap <silent><buffer> <C-]>       :<C-U>exe <SID>jump('edit')<CR>
+  nmap <silent><buffer> <C-W>]      :<C-U>exe <SID>jump('split')<CR>
+  nmap <silent><buffer> <C-W><C-]>  :<C-U>exe <SID>jump('split')<CR>
+  nmap <silent><buffer> <C-W>}      :<C-U>exe <SID>jump('pedit')<CR>
   let b:undo_ftplugin .= "| sil! iunmap! <C-]>| sil! iunmap! <C-W>]| sil! iunmap! <C-W>}"
 endif
 
