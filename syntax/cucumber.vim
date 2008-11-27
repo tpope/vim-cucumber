@@ -58,7 +58,7 @@ exe 'syn match cucumberMoreExamples "\%(^\s*\)\@<='.s:pattern('more_examples').'
 
 syn match   cucumberExampleTable  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
 syn match   cucumberDelimiter     "|" contained
-syn region  cucumberString   start=+\%(^\s*\)\@<="+ skip=+\\\\\|\\"+ end=+"+
+syn region  cucumberString   start=+\%(^\s*\)\@<="""+ end=+"""+
 
 call s:Add('Then')
 call s:Add('When')
