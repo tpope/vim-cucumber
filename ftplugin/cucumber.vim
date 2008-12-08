@@ -34,7 +34,7 @@ function! s:jump(command)
   endif
 endfunction
 
-function! s:steps(step)
+function! s:allsteps()
   let step_pattern = '\C^\s*\%(Giv\|[WT]h\)en\>\s*\zs.\{-\}\ze\s*\%(do\|{\)\s*\%(|[A-Za-z0-9_,() *]*|\s*\)\=$'
   let steps = []
   for file in split(glob(b:cucumber_root.'/**/*.rb'),"\n")
@@ -43,13 +43,17 @@ function! s:steps(step)
     for line in lines
       let num += 1
       if line =~ step_pattern
-        let steps += [[file,num,matchstr(line,step_pattern)]]
+        let type = matchstr(line,'\w\+')
+        let steps += [[file,num,type,matchstr(line,step_pattern)]]
       endif
     endfor
   endfor
-  let step = matchstr(a:step,'^\s*\k*\s*\zs.\{-\}\s*$')
-  call filter(steps,'s:stepmatch(v:val[2],step)')
   return steps
+endfunction
+
+function! s:steps(step)
+  let step = matchstr(a:step,'^\s*\k*\s*\zs.\{-\}\s*$')
+  return filter(s:allsteps(),'s:stepmatch(v:val[3],step)')
 endfunction
 
 function! s:stepmatch(receiver,target)
