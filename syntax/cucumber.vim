@@ -51,6 +51,7 @@ function! s:Add(name)
   exe 'hi def link cucumber'.a:name.'Comment cucumberComment'
   exe 'hi def link cucumber'.a:name.'But cucumber'.a:name.'And'
   exe 'hi def link cucumber'.a:name.'And cucumber'.a:name
+  exe 'syn cluster cucumberStepRegions add=cucumber'.a:name.'Region,cucumber'.a:name.'AndRegion,cucumber'.a:name.'ButRegion'
 endfunction
 
 syn match   cucumberComment  "\%(^\s*\)\@<=#.*"
@@ -61,6 +62,7 @@ exe 'syn match cucumberScenario "\%(^\s*\)\@<='.s:pattern('scenario').':"'
 exe 'syn match cucumberScenarioOutline "\%(^\s*\)\@<='.s:pattern('scenario_outline').':"'
 exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTable skipnl skipwhite'
 
+syn match   cucumberPlaceholder   "<[^<>]*>" contained containedin=@cucumberStepRegions
 syn match   cucumberExampleTable  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
 syn match   cucumberDelimiter     "|" contained
 syn region  cucumberString   start=+\%(^\s*\)\@<="""+ end=+"""+
@@ -75,6 +77,7 @@ hi def link cucumberBackground        Define
 hi def link cucumberScenario          Define
 hi def link cucumberScenarioOutline   Define
 hi def link cucumberExamples          Define
+hi def link cucumberPlaceholder       Constant
 hi def link cucumberDelimiter         Delimiter
 hi def link cucumberString            String
 hi def link cucumberGiven             Conditional
