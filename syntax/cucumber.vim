@@ -65,6 +65,7 @@ exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgr
 syn match   cucumberPlaceholder   "<[^<>]*>" contained containedin=@cucumberStepRegions
 syn match   cucumberExampleTable  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
 syn match   cucumberDelimiter     "|" contained
+syn match   cucumberTags          "\%(^\s*\)\@<=\%(@[^@[:space:]]\+\s\+\)*@[^@[:space:]]\+\s*$"
 syn region  cucumberString   start=+\%(^\s*\)\@<="""+ end=+"""+
 
 call s:Add('Then')
@@ -79,6 +80,7 @@ hi def link cucumberScenarioOutline   Define
 hi def link cucumberExamples          Define
 hi def link cucumberPlaceholder       Constant
 hi def link cucumberDelimiter         Delimiter
+hi def link cucumberTags              Tag
 hi def link cucumberString            String
 hi def link cucumberGiven             Conditional
 hi def link cucumberWhen              Function
