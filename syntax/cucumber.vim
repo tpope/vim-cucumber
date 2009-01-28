@@ -11,7 +11,7 @@ syn case match
 syn sync minlines=20
 
 let g:cucumber_langauges = {
-      \"en": {"and": "And", "background": "Background", "but": "But", "examples": "Examples", "feature": "Feature", "given": "Given", "scenario": "Scenario", "scenario_outline": "Scenario Outline", "then": "Then", "when": "When"},
+      \"en": {"and": "And", "background": "Background", "but": "But", "examples": "Examples|Scenarios", "feature": "Feature", "given": "Given", "scenario": "Scenario", "scenario_outline": "Scenario Outline", "then": "Then", "when": "When"},
       \"ar": {"and": "\u0648", "but": "\u0644\u0643\u0646", "feature": "\u062e\u0627\u0635\u064a\u0629", "given": "\u0628\u0641\u0631\u0636", "scenario": "\u0633\u064a\u0646\u0627\u0631\u064a\u0648", "then": "\u0627\u0630\u0627\u064b", "when": "\u0645\u062a\u0649"},
       \"cy": {"and": "A", "but": "Ond", "examples": "Enghreifftiau", "feature": "Arwedd", "given": "anrhegedig a", "scenario": "Scenario", "then": "Yna", "when": "Pryd"},
       \"cz": {"and": "A", "background": "Pozad\u00ed", "but": "Ale", "examples": "P\u0159\u00edklady", "feature": "Po\u017eadavek", "given": "Pokud", "scenario": "Sc\u00e9n\u00e1\u0159", "scenario_outline": "N\u00e1\u010drt Sc\u00e9n\u00e1\u0159e", "then": "Pak", "when": "Kdy\u017e"},
@@ -38,7 +38,7 @@ let g:cucumber_langauges = {
       \"zh-CN": {"and": "\u800c\u4e14", "but": "\u4f46\u662f", "feature": "\u529f\u80fd", "given": "\u5047\u5982", "scenario": "\u573a\u666f", "then": "\u90a3\u4e48", "when": "\u5f53"}}
 
 function! s:pattern(key)
-  return '\<\%('.join(map(values(g:cucumber_langauges),'get(v:val,a:key,"\\%(a\\&b\\)")'),'\|').'\)\%(\>\|[[:alnum:]]\@<!\)'
+  return '\<\%('.join(map(values(g:cucumber_langauges),'substitute(get(v:val,a:key,"\\%(a\\&b\\)"),"|","\\\\|","g")'),'\|').'\)\%(\>\|[[:alnum:]]\@<!\)'
 endfunction
 
 function! s:Add(name)
