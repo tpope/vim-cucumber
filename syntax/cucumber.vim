@@ -74,7 +74,7 @@ exe 'syn match cucumberFeature "\%(^\s*\)\@<='.s:pattern('feature').':"'
 exe 'syn match cucumberBackground "\%(^\s*\)\@<='.s:pattern('background').':"'
 exe 'syn match cucumberScenario "\%(^\s*\)\@<='.s:pattern('scenario').':"'
 exe 'syn match cucumberScenarioOutline "\%(^\s*\)\@<='.s:pattern('scenario_outline').':"'
-exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTable skipnl skipwhite'
+exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTable skipempty skipwhite'
 
 syn match   cucumberPlaceholder   "<[^<>]*>" contained containedin=@cucumberStepRegions
 syn match   cucumberExampleTable  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
