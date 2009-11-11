@@ -54,7 +54,7 @@ function! s:allsteps()
 endfunction
 
 function! s:steps(step)
-  let step = matchstr(a:step,'^\s*\k*\s*\zs.\{-\}\s*$')
+  let step = matchstr(a:step,'^\s*\k*\s*\zs.\{-\}\ze\s*$')
   return filter(s:allsteps(),'s:stepmatch(v:val[3],step)')
 endfunction
 
