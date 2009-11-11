@@ -69,8 +69,8 @@ function! s:Add(name)
 endfunction
 
 syn match   cucumberComment  "\%(^\s*\)\@<=#.*"
-syn match   cucumberUnparsed "\S.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
-syn match   cucumberUnparsedComment "#.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
+syn match   cucumberUnparsed "\S.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
+syn match   cucumberUnparsedComment "#.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
 
 exe 'syn match cucumberFeature "\%(^\s*\)\@<='.s:pattern('feature').':" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty'
 exe 'syn match cucumberBackground "\%(^\s*\)\@<='.s:pattern('background').':"'
