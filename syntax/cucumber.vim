@@ -52,7 +52,13 @@ let g:cucumber_languages = {
       \"zh-TW": {"and": "\\%u800c\\%u4e14|\\%u4e26\\%u4e14", "background": "\\%u80cc\\%u666f", "but": "\\%u4f46\\%u662f", "examples": "\\%u4f8b\\%u5b50", "feature": "\\%u529f\\%u80fd", "given": "\\%u5047\\%u8a2d", "scenario": "\\%u5834\\%u666f|\\%u5287\\%u672c", "scenario_outline": "\\%u5834\\%u666f\\%u5927\\%u7db1|\\%u5287\\%u672c\\%u5927\\%u7db1", "then": "\\%u90a3\\%u9ebc", "when": "\\%u7576"}}
 
 function! s:pattern(key)
-  return '\<\%('.join(map(values(g:cucumber_languages),'substitute(get(v:val,a:key,"\\%(a\\&b\\)"),"|","\\\\|","g")'),'\|').'\)\%(\>\|[[:alnum:]]\@<!\)'
+  let language = matchstr(getline(1),'#\s*language:\s*\zs\S\+')
+  if has_key(g:cucumber_languages, language)
+    let languages = [g:cucumber_languages[language]]
+  else
+    let languages = values(g:cucumber_languages)
+  end
+  return '\<\%('.join(map(languages,'substitute(get(v:val,a:key,"\\%(a\\&b\\)"),"|","\\\\|","g")'),'\|').'\)\%(\>\|[[:alnum:]]\@<!\)'
 endfunction
 
 function! s:Add(name)
