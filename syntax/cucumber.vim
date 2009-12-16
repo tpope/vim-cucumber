@@ -69,6 +69,8 @@ function! s:Add(name)
 endfunction
 
 syn match   cucumberComment  "\%(^\s*\)\@<=#.*"
+syn match   cucumberComment  "\%(\%^\s*\)\@<=#.*" contains=cucumberLanguage
+syn match   cucumberLanguage "\%(#\s*\)\@<=language:" contained
 syn match   cucumberUnparsed "\S.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
 syn match   cucumberUnparsedComment "#.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
 
@@ -90,6 +92,7 @@ call s:Add('Given')
 
 hi def link cucumberUnparsedComment   cucumberComment
 hi def link cucumberComment           Comment
+hi def link cucumberLanguage          SpecialComment
 hi def link cucumberFeature           Macro
 hi def link cucumberBackground        Define
 hi def link cucumberScenario          Define
