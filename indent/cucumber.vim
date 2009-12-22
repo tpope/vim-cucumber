@@ -1,6 +1,6 @@
 " Vim indent file
 " Language:	Cucumber
-" Maintainer:	Tim Pope <vimNOSPAM@tpope.info>
+" Maintainer:	Tim Pope <vimNOSPAM@tpope.org>
 
 if exists("b:did_indent")
   finish

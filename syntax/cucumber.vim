@@ -1,6 +1,6 @@
 " Vim syntax file
 " Language:     Cucumber
-" Maintainer:   Tim Pope <vimNOSPAM@tpope.info>
+" Maintainer:   Tim Pope <vimNOSPAM@tpope.org>
 " Filenames:    *.feature
 
 if exists("b:current_syntax")
