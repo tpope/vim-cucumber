@@ -54,6 +54,9 @@ let g:cucumber_languages = {
 
 function! s:pattern(key)
   let language = matchstr(getline(1),'#\s*language:\s*\zs\S\+')
+  if &fileencoding == 'latin1' && language == ''
+    let language = 'en'
+  endif
   if has_key(g:cucumber_languages, language)
     let languages = [g:cucumber_languages[language]]
   else
