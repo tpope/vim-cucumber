@@ -20,7 +20,7 @@ CompilerSet errorformat=
       \%W%m\ (Cucumber::Undefined),
       \%E%m\ (%.%#),
       \%Z%f:%l,
-      \%Z%f:%l:in\ %.%#
+      \%Z%f:%l:%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save
