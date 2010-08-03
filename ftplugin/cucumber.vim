@@ -79,7 +79,7 @@ function! s:stepmatch(receiver,target)
     endif
   catch
   endtry
-  if has("ruby")
+  if has("ruby") && pattern !~ '\\\@<!#{'
     ruby VIM.command("return #{if (begin; Kernel.eval('/'+VIM.evaluate('pattern')+'/'); rescue SyntaxError; end) === VIM.evaluate('a:target') then 1 else 0 end}")
   else
     return 0
