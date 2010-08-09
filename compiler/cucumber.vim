@@ -1,6 +1,7 @@
 " Vim compiler file
 " Compiler:	Cucumber
 " Maintainer:	Tim Pope <vimNOSPAM@tpope.org>
+" Last Change:	2010 Aug 09
 
 if exists("current_compiler")
   finish
