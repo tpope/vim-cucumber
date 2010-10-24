@@ -24,8 +24,10 @@ endfunction
 function! GetCucumberIndent()
   let line  = getline(prevnonblank(v:lnum-1))
   let cline = getline(v:lnum)
+  let nline = getline(nextnonblank(v:lnum+1))
   let syn = s:syn(prevnonblank(v:lnum-1))
   let csyn = s:syn(v:lnum)
+  let nsyn = s:syn(nextnonblank(v:lnum+1))
   if csyn ==# 'cucumberFeature' || cline =~# '^\s*Feature:'
     return 0
   elseif csyn ==# 'cucumberExamples' || cline =~# '^\s*\%(Examples\|Scenarios\):'
@@ -38,7 +40,7 @@ function! GetCucumberIndent()
     return 3 * &sw
   elseif syn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || line =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
     return 2 * &sw
-  elseif cline =~# '^\s*@' && (s:syn(nextnonblank(v:lnum+1)) == 'cucumberFeature' || getline(nextnonblank(v:lnum+1)) =~# '^\s*Feature:' || indent(prevnonblank(v:lnum-1)) <= 0)
+  elseif cline =~# '^\s*@' && (nsyn == 'cucumberFeature' || nline =~# '^\s*Feature:' || indent(prevnonblank(v:lnum-1)) <= 0)
     return 0
   elseif line =~# '^\s*@'
     return &sw
