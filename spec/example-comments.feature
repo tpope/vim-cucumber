@@ -33,10 +33,16 @@ And I press gg=G
 Then I should see the file reindent good
 # Comments trailing the steps.
 
-Scenario: A new scenario after that first one
+Scenario: A scenario with a table and then a comment
+Then I have a table
+| 5 | five |
+| 6 | six |
+
+# A comment for a scenario after a table and whitspace.
+Scenario: Another scenario
 Then I am done
 # Comments trailing the steps.
 
 # A comment for a scenario after some trailing comments.
-Scenario: A new scenario after that first one
+Scenario: Yet more scenariage
 Then I am really done. Promise.

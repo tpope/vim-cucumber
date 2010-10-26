@@ -38,7 +38,7 @@ describe 'Vim cucumber mode' do
     vim('--remote-send', ':qall!<CR>')
   end
 
-  examples = %w[example-basic example-comments]
+  examples = %w[example-basic example-comments example-table]
   examples.each do |base|
     input = "#{base}.feature"
     expected = "#{base}.expected.feature"
