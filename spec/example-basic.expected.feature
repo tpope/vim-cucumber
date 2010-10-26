@@ -1,17 +1,29 @@
 Feature: An unindented feature
-	As a developer
-	I want cucumber.vim to indent features correctly
-	So that I can easily correct my BA's sloppiness
+  As a developer
+  I want cucumber.vim to indent features correctly
+  So that I can easily correct my BA's sloppiness
 
-	Background:
-		Given there is a sloppily written feature
+  Background:
+    Given there is a sloppily written feature
 
-	Scenario: Indent the feature correctly
-		Given I have a file with the lines:
-			| 1 | one |
-			| 2 | two |
-			| 3 | three |
-			| 4 | four |
-		When I open the file
-		And I press gg=G
-		Then I should see the file reindent good
+  Scenario: Indent the feature correctly
+    Given I have a file with the lines:
+      | 1 | one |
+      | 2 | two |
+      | 3 | three |
+      | 4 | four |
+    When I open the file
+    And I press gg=G
+    Then I should see the file reindent good
+
+  Scenario Outline: Indent the feature correctly with examples
+    Given I have a scenario with "<stuff>"
+    Examples:
+      | stuff |
+      | tables |
+      | comments |
+      | examples |
+      | backgrounds |
+    When I open the file
+    And I press gg=G
+    Then I should see the file reindent good

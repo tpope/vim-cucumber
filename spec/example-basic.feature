@@ -15,3 +15,15 @@ Given I have a file with the lines:
 When I open the file
 And I press gg=G
 Then I should see the file reindent good
+
+Scenario Outline: Indent the feature correctly with examples
+Given I have a scenario with "<stuff>"
+Examples:
+| stuff |
+| tables |
+| comments |
+| examples |
+| backgrounds |
+When I open the file
+And I press gg=G
+Then I should see the file reindent good

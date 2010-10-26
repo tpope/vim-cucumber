@@ -1,3 +1,3 @@
-set sw=4 sts=0 ts=4
 autocmd BufNewFile,BufReadPost *.feature,*.story set filetype=cucumber
 autocmd FileType cucumber source ../indent/cucumber.vim
+autocmd FileType cucumber setl et sw=2 sts=2 ts=2

@@ -8,6 +8,7 @@ require 'spec'
 require 'yaml'
 require 'pp'
 require 'pathname'
+require 'spec/be_same_text'
 
 THIS_DIR = Pathname.new(__FILE__).dirname
 
@@ -42,12 +43,11 @@ describe 'Vim cucumber mode' do
     input = "#{base}.feature"
     expected = "#{base}.expected.feature"
     it "should indent the example #{input.inspect} correctly" do
-      # open input.feature in vim
-      vim('--remote-send', ":e #{input}<CR>")
-      vim('--remote-send', 'gg=G"+yG') # indent and copy whole file to clipboard
-      output = `pbpaste`
-      expected = THIS_DIR.join(expected).read
-      output.should == expected
+      # open input.feature, indent and copy whole file to clipboard
+      vim('--remote-send', %{:e #{input}<CR>gg=G"+yG:bd!<CR>})
+      output_text = `pbpaste`
+      expected_text = THIS_DIR.join(expected).read
+      output_text.should be_same_text(expected_text)
     end
   end
 end
