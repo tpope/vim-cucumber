@@ -1,6 +1,7 @@
 begin
   require 'rubygems'
   gem 'rspec'
+  gem 'escape'
 rescue
 end
 
@@ -8,20 +9,32 @@ require 'spec'
 require 'yaml'
 require 'pp'
 require 'pathname'
+require 'escape'
 require 'spec/be_same_text'
 
 THIS_DIR = Pathname.new(__FILE__).dirname
 
+def vim_cmd(*args)
+  [
+    'gvim',
+    '-n',                       # no swap file
+    '-N',                       # set nocompatible
+    '--noplugin',               # don't load plugins
+    '-u', 'vimrc',              # don't load normal ~/.vimrc
+    '-U', 'gvimrc',             # don't load normal ~/.gvimrc
+    '--servername', 'cuketest', # use a server name to sandbox from other vim instances
+    *args
+  ]
+end
+
+def vim_eval(*args)
+  cmd = Escape.shell_command(vim_cmd(*args))
+  `#{cmd}`.to_s.chomp
+end
+
 def vim(*args)
   Dir.chdir(THIS_DIR) do
-    system('gvim',
-           '-n',                       # no swap file
-           '-N',                       # set nocompatible
-           '--noplugin',               # don't load plugins
-           '-u', 'vimrc',              # don't load normal ~/.vimrc
-           '-U', 'gvimrc',             # don't load normal ~/.gvimrc
-           '--servername', 'cuketest', # use a server name to sandbox from other vim instances
-           *args)
+    system(*vim_cmd(*args))
   end
 end
 
@@ -48,6 +61,17 @@ describe 'indent/cucumber.vim' do
       output_text = `pbpaste`
       expected_text = THIS_DIR.join(expected).read
       output_text.should be_same_text(expected_text)
+    end
+  end
+
+  it "should indent blank lines correctly" do
+    input = 'example-blanks.feature'
+    vim('--remote-send', %{:e #{input}<CR>jjo})
+    begin
+      col = vim_eval('--remote-expr', %{col('.')})
+      col.should == '3'
+    ensure
+      vim('--remote-send', %{<Esc>})
     end
   end
 end
