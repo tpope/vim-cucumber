@@ -52,19 +52,21 @@ function! GetCucumberIndent()
   elseif cline =~# '^\s*@'
     " other tags
     return &sw
-  elseif cline =~# '^\s*[#|]' && line =~# '^\s*|'
-    " mid-table
-    " preserve indent
+  elseif cline =~# '^\s*#' && getline(v:lnum-1) =~# '^\s*$'
+    " comments after blank lines
+    return &sw
+  elseif cline =~# '^\s*#' && getline(v:lnum-1) =~# '^\s*#'
+    " comments after comments, indent = indent
+    return indent(prevnonblank(v:lnum-1))
+  elseif cline =~# '^\s*[#|]' && line =~# '^\s*[#|]'
+    " mid-table, indent = indent
     return indent(prevnonblank(v:lnum-1))
   elseif cline =~# '^\s*|' && line =~# '^\s*[^|]'
-    " first line of a table, relative indent
+    " first line of a table, indent += sw
     return indent(prevnonblank(v:lnum-1)) + &sw
   elseif cline =~# '^\s*[^|]' && line =~# '^\s*|'
-    " line after a table, relative unindent
+    " line after a table, indent -= sw
     return indent(prevnonblank(v:lnum-1)) - &sw
-  elseif cline =~# '^\s*#' && getline(v:lnum-1) =~ '^\s*$' && (nsyn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || nline =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):')
-    " comments on scenarios
-    return &sw
   endif
   return indent(prevnonblank(v:lnum-1))
 endfunction

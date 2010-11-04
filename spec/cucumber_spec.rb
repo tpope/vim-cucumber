@@ -25,7 +25,7 @@ def vim(*args)
   end
 end
 
-describe 'Vim cucumber mode' do
+describe 'indent/cucumber.vim' do
   before(:all) do
     # start vim server
     vim
