@@ -33,6 +33,8 @@ And I press gg=G
 Then I should see the file reindent good
 # Comments trailing the steps.
 
+# Single line comment above some tags.
+@tag1
 Scenario: A scenario with a table and then a comment
 Then I have a table
 | 5 | five |
@@ -40,9 +42,15 @@ Then I have a table
 
 # A comment for a scenario after a table and whitspace.
 Scenario: Another scenario
-Then I am done
+Then I am testin' testin' testin'
 # Comments trailing the steps.
 
 # A comment for a scenario after some trailing comments.
 Scenario: Yet more scenariage
-Then I am really done. Promise.
+Then I am not really done at all
+
+Scenario: An empty scenario
+
+# A comment after an empty scenario for the next scenario
+@tag1
+Scenario: A scenario after an empty scenario

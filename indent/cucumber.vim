@@ -43,17 +43,21 @@ function! GetCucumberIndent()
   elseif syn ==# 'cucumberExamples' || line =~# '^\s*\%(Examples\|Scenarios\):'
     " line after examples heading
     return 3 * &sw
-  elseif syn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || line =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
-    " line after background, scenario or outline heading
-    return 2 * &sw
+
   elseif cline =~# '^\s*[@#]' && (nsyn == 'cucumberFeature' || nline =~# '^\s*Feature:' || indent(prevnonblank(v:lnum-1)) <= 0)
     " tag or comment before a feature heading
     return 0
-  elseif cline =~# '^\s*@'
-    " other tags
-    return &sw
+
   elseif cline =~# '^\s*#' && getline(v:lnum-1) =~# '^\s*$'
     " comments after blank lines
+    return &sw
+
+  elseif syn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || line =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
+    " line after background, scenario or outline heading
+    return 2 * &sw
+
+  elseif cline =~# '^\s*@'
+    " other tags
     return &sw
   elseif cline =~# '^\s*#' && getline(v:lnum-1) =~# '^\s*#'
     " comments after comments, indent = indent

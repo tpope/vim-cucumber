@@ -38,7 +38,7 @@ def vim(*args)
   end
 end
 
-describe 'indent/cucumber.vim' do
+describe 'GetCucumberIndent in indent/cucumber.vim' do
   before(:all) do
     # start vim server
     vim
@@ -55,7 +55,7 @@ describe 'indent/cucumber.vim' do
   examples.each do |base|
     input = "#{base}.feature"
     expected = "#{base}.expected.feature"
-    it "should indent the example #{input.inspect} correctly" do
+    it "indents the example #{input.inspect} correctly" do
       # open input.feature, indent and copy whole file to clipboard
       vim('--remote-send', %{:e #{input}<CR>gg=G"+yG:bd!<CR>})
       output_text = `pbpaste`
@@ -64,7 +64,7 @@ describe 'indent/cucumber.vim' do
     end
   end
 
-  it "should indent blank lines correctly" do
+  it "indents blank lines correctly" do
     input = 'example-blanks.feature'
     vim('--remote-send', %{:e #{input}<CR>jjo})
     begin
