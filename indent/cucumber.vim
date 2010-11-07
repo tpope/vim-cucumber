@@ -12,6 +12,8 @@ setlocal autoindent
 setlocal indentexpr=GetCucumberIndent()
 setlocal indentkeys=o,O,*<Return>,<:>,0<Bar>,0#,=,!^F
 
+let b:undo_indent = 'setl ai< inde< indk<'
+
 " Only define the function once.
 if exists("*GetCucumberIndent")
   finish
