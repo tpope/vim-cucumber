@@ -1,4 +1,4 @@
-Spec::Matchers.define :be_same_text do |expected|
+RSpec::Matchers.define :be_same_text do |expected|
   match do |actual|
     expected == actual
   end

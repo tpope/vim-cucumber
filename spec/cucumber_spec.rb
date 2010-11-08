@@ -1,18 +1,17 @@
 begin
   require 'rubygems'
-  gem 'rspec'
-  gem 'escape'
+  gem 'rspec', '>=2.1.0'
+  gem 'escape', '>=0.0.4'
 rescue
 end
 
-require 'spec'
+THIS_DIR = Pathname.new(__FILE__).dirname
+
 require 'yaml'
 require 'pp'
 require 'pathname'
 require 'escape'
-require 'spec/be_same_text'
-
-THIS_DIR = Pathname.new(__FILE__).dirname
+require THIS_DIR.join('be_same_text')
 
 def vim_cmd(*args)
   [
