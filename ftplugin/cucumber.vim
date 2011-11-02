@@ -18,10 +18,10 @@ let b:undo_ftplugin = "setl fo< com< cms< ofu<"
 let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
-  nmap <silent><buffer> <C-]>       :<C-U>exe <SID>jump('edit',v:count)<CR>
-  nmap <silent><buffer> <C-W>]      :<C-U>exe <SID>jump('split',v:count)<CR>
-  nmap <silent><buffer> <C-W><C-]>  :<C-U>exe <SID>jump('split',v:count)<CR>
-  nmap <silent><buffer> <C-W>}      :<C-U>exe <SID>jump('pedit',v:count)<CR>
+  nnoremap <silent><buffer> <C-]>       :<C-U>exe <SID>jump('edit',v:count)<CR>
+  nnoremap <silent><buffer> <C-W>]      :<C-U>exe <SID>jump('split',v:count)<CR>
+  nnoremap <silent><buffer> <C-W><C-]>  :<C-U>exe <SID>jump('split',v:count)<CR>
+  nnoremap <silent><buffer> <C-W>}      :<C-U>exe <SID>jump('pedit',v:count)<CR>
   let b:undo_ftplugin .= "| sil! nunmap <buffer> <C-]>| sil! nunmap <buffer> <C-W>]| sil! nunmap <buffer> <C-W><C-]>| sil! nunmap <buffer> <C-W>}"
 endif
 
