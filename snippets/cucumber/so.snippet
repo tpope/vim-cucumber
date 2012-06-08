@@ -1,0 +1,9 @@
+Scenario Outline: ${1:eating}
+	Given ${2: there are <start> cucumbers}
+	When ${3: I eat <eat> cucumbers}
+	Then ${4: I should have <left> cucumbers}
+
+	Examples:
+		| ${5:start} | ${6:eat} | ${7:left} |
+		|  ${8:12}   |  ${9:5}  |  ${10:7}   |
+		| ${11}
