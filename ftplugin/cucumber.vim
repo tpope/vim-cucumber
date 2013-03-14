@@ -38,7 +38,7 @@ function! s:jump(command,count)
 endfunction
 
 function! s:allsteps()
-  let step_pattern = '\C^\s*\K\k*\>\s*\zs\S.\{-\}\ze\s*\%(do\|{\)\s*\%(|[^|]*|\s*\)\=\%($\|#\)'
+  let step_pattern = '\C^\s*\K\k*\>\s*(\=\s*\zs\S.\{-\}\ze\s*)\=\s*\%(do\|{\)\s*\%(|[^|]*|\s*\)\=\%($\|#\)'
   let steps = []
   for file in split(glob(b:cucumber_root.'/**/*.rb'),"\n")
     let lines = readfile(file)
