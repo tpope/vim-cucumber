@@ -34,7 +34,7 @@ if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
         \ "|sil! nunmap <buffer> ]<C-D>" .
         \ "|sil! nunmap <buffer> <C-W>]" .
         \ "|sil! nunmap <buffer> <C-W><C-]>" .
-        \ "|sil! nunmap <buffer> <C-W>D" .
+        \ "|sil! nunmap <buffer> <C-W>d" .
         \ "|sil! nunmap <buffer> <C-W><C-D>" .
         \ "|sil! nunmap <buffer> <C-W>}" .
         \ "|sil! nunmap <buffer> [d" .
