@@ -71,7 +71,7 @@ function! s:allsteps()
 endfunction
 
 function! s:steps(lnum)
-  let c = indent(a:lnum) + 1
+  let c = match(getline(a:lnum), '\S') + 1
   while synIDattr(synID(a:lnum,c,1),'name') !~# '^$\|Region$'
     let c = c + 1
   endwhile
