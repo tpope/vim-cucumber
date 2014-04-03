@@ -27,6 +27,7 @@ if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
   nnoremap <silent><buffer> <C-W><C-D>  :<C-U>exe <SID>jump('split',v:count)<CR>
   nnoremap <silent><buffer> [d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
   nnoremap <silent><buffer> ]d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
+  inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
   let b:undo_ftplugin .=
         \ "|sil! nunmap <buffer> [<C-D>" .
         \ "|sil! nunmap <buffer> ]<C-D>" .
@@ -45,6 +46,17 @@ function! s:jump(command,count)
   else
     let c = a:count ? a:count-1 : 0
     return a:command.' +'.steps[c][1].' '.escape(steps[c][0],' %#')
+  endif
+endfunction
+
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
   endif
 endfunction
 
