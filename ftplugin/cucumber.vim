@@ -28,6 +28,7 @@ if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
   nnoremap <silent> <script> <buffer> <C-W><C-D>  :<C-U>exe <SID>jump('split',v:count)<SID>foldopen<CR>
   nnoremap <silent> <script> <buffer> [d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
   nnoremap <silent> <script> <buffer> ]d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
+  nnoremap <silent> <script> <buffer> <C-W><C-E>  :<C-U>exe <SID>jump('pedit',v:count)<CR><C-W>P:resize 30<CR>zz
   let b:undo_ftplugin .=
         \ "|sil! nunmap <buffer> [<C-D>" .
         \ "|sil! nunmap <buffer> ]<C-D>" .
