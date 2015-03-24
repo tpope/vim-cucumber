@@ -18,9 +18,7 @@ setlocal omnifunc=CucumberComplete
 
 let b:undo_ftplugin = "setl fo< com< cms< ofu<"
 
-" let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
-let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)/step_definitions/mobile_website\zs[\/].*??')
-echomsg 'cucumber_root = ' . b:cucumber_root
+let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
   cnoremap <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
@@ -39,9 +37,6 @@ if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
         \ "|sil! nunmap <buffer> ]d"
 endif
 
-function! VimCucumberRoot()
-  echo 'cucumber_root = ' + b:cucumber_root
-endfunction
 function! s:jump(command,count)
   let steps = s:steps('.')
   if len(steps) == 0 || len(steps) < a:count
