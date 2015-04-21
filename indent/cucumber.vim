@@ -48,6 +48,16 @@ function! GetCucumberIndent()
   elseif syn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || line =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
     " line after background, scenario or outline heading
     return 2 * &sw
+  elseif cline =~# '^\s*\%(And\|But\)' && line =~# '^\s*\%(When\|Then\)'
+    return indent(prevnonblank(v:lnum-1)) + 1
+  elseif cline =~# '^\s*\%(And\|But\)' && line =~# '^\s*\%(Given\)'
+    return indent(prevnonblank(v:lnum-1)) + 2
+  elseif cline =~# '^\s*\%(When\|Then\)' && line =~# '^\s*\%(Given\)'
+    return indent(prevnonblank(v:lnum-1)) + 1
+  elseif cline =~# '^\s*\%(When\|Then\)' && line =~# '^\s*\%(And\|But\)'
+    return indent(prevnonblank(v:lnum-1)) - 1
+  elseif cline =~# '^\s*\%(When\|Then\)' && line =~# '^\s*\%(When\|Then\)'
+    return indent(prevnonblank(v:lnum-1))
   elseif cline =~# '^\s*[@#]' && (nsyn == 'cucumberFeature' || nline =~# '^\s*Feature:' || indent(prevnonblank(v:lnum-1)) <= 0)
     " tag or comment before a feature heading
     return 0
