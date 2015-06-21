@@ -15,6 +15,11 @@ corresponding step definition and replaces the current buffer. `<C-W>d` or
 the cursor there. `[d` or `]d` on a step opens the step definition in a new
 split buffer while maintaining the current cursor position.
 
+## Documentation
+
+Standard vim documentation is available through:
+  :h vim-cucumber
+
 ## Installation
 
 If you don't have a preferred installation method, I recommend installing
