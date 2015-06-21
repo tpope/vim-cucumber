@@ -1,0 +1,32 @@
+*vim-cucumber.txt*  Simple docs for those of us suffering from CRS
+
+Author: Jonathan Seidel <http://www.edpci.com>
+License: Same terms as vim itself ( see |license|)
+
+INTRODUCTION                              *vim-cucumber*
+
+When working with cucumber, several useful commands are defined
+that let you work with feature files and step definitions seamlessly.
+
+MAPPINGS                                  *vim-cucumber-mappings*
+
+These mappings are available in your local buffers.
+
+                                          *vim-cucumber_[<CTRL-d>*
+                                          *vim-cucumber_]<CTRL-d>*
+[<C-d>            on a step jumps to the corresponding step definition and 
+]<C-d>            replaces the current buffer.
+
+                                          *vim-cucumber_<CTRL-W>d*
+                                          *vim-cucumber_<CTRL-W><CTRL-d>*
+<C-W>d            on a step jumps to its definition in a new split buffer
+<C-w><C-d>        and moves the cursor there.
+
+                                          *vim-cucumber_[d*
+                                          *vim-cucumber_]d*
+[d                on a step jumps to its definition in a new split buffer
+]d                while maintaining the current cursor position.
+
+                                          *vim-cucumber_<CTRL-^>*
+<C-^>             Return from the step definition to the feature file
+                  after having used the [<C-d> mapping.
