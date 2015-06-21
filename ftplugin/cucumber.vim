@@ -18,14 +18,10 @@ setlocal omnifunc=CucumberComplete
 
 let b:undo_ftplugin = "setl fo< com< cms< ofu<"
 
-" let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
-let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)/step_definitions/mobile_website\zs[\/].*??')
-" let b:cucumber_root = expand('/Users/yc98js1/dev/QAA/features/step_definitions/mobile_website/.*??')
-echom 'cucumber_root = ' . b:cucumber_root
-function! VimCucumberRoot(root)
-  return root
-endfunction
-command! VimCucumberRoot :call VimCucumberRoot(b:cucumber_root))
+let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
+if !exists("b:cucumber_steps_glob")
+  let b:cucumber_steps_glob = b:cucumber_root.'/**/*.rb'
+endif
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
   cnoremap <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
@@ -59,7 +55,7 @@ endfunction
 function! s:allsteps()
   let step_pattern = '\C^\s*\K\k*\>\s*(\=\s*\zs\S.\{-\}\ze\s*)\=\s*\%(do\|{\)\s*\%(|[^|]*|\s*\)\=\%($\|#\)'
   let steps = []
-  for file in split(glob(b:cucumber_root.'/**/*.rb'),"\n")
+  for file in split(glob(b:cucumber_steps_glob),"\n")
     let lines = readfile(file)
     let num = 0
     for line in lines
