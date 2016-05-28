@@ -1,7 +1,7 @@
 " Vim filetype plugin
 " Language:	Cucumber
 " Maintainer:	Tim Pope <vimNOSPAM@tpope.org>
-" Last Change:	2013 Jun 01
+" Last Change: 2016 May 28
 
 " Only do this when not done yet for this buffer
 if (exists("b:did_ftplugin"))
@@ -18,9 +18,19 @@ setlocal omnifunc=CucumberComplete
 
 let b:undo_ftplugin = "setl fo< com< cms< ofu<"
 
+" Allow setting the cucumber-root to a different value,
+" via ENV variable CUKEFILES
+" This is the default
 let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
+
 if !exists("b:cucumber_steps_glob")
-  let b:cucumber_steps_glob = b:cucumber_root.'/**/*.rb'
+  if empty($CUKEFILES)
+    echom "Using default definition for b:cucumber_steps_glob"
+    let b:cucumber_steps_glob = b:cucumber_root.'/**/*.rb'
+  else
+    echom 'Using CUKEFILES environment variable for b:cucumber_steps_glob'
+    let b:cucumber_steps_glob = $CUKEFILES
+  endif
 endif
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
@@ -45,7 +55,7 @@ function! s:jump(command,count)
   if len(steps) == 0 || len(steps) < a:count
     return 'echoerr "No matching step found"'
   elseif len(steps) > 1 && !a:count
-    return 'echoerr "Multiple matching steps found"'
+    return 'echoerr "Multiple matching steps (" . len(steps) . ") found"'
   else
     let c = a:count ? a:count-1 : 0
     return a:command.' +'.steps[c][1].' '.escape(steps[c][0],' %#')
