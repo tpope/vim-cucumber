@@ -83,15 +83,18 @@ function! s:pattern(key)
 endfunction
 
 function! s:Add(name)
-  let next = " skipempty skipwhite nextgroup=".join(map(["Region","AndRegion","ButRegion","Comment","String","Table"],'"cucumber".a:name.v:val'),",")
+  let next        = " skipempty skipwhite nextgroup=".join(map(["Region","AndRegion","ButRegion","Comment","String","TableHeader"], '"cucumber".a:name.v:val'),",")
+  let next_header = " skipempty skipwhite nextgroup=".join(map(["Region","AndRegion","ButRegion","Comment","String","TableContent"],'"cucumber".a:name.v:val'),",")
   exe "syn region cucumber".a:name.'Region matchgroup=cucumber'.a:name.' start="\%(^\s*\)\@<=\%('.s:pattern(tolower(a:name)).'\)" end="$"'.next
   exe 'syn region cucumber'.a:name.'AndRegion matchgroup=cucumber'.a:name.'And start="\%(^\s*\)\@<='.s:pattern('and').'" end="$" contained'.next
   exe 'syn region cucumber'.a:name.'ButRegion matchgroup=cucumber'.a:name.'But start="\%(^\s*\)\@<='.s:pattern('but').'" end="$" contained'.next
   exe 'syn match cucumber'.a:name.'Comment "\%(^\s*\)\@<=#.*" contained'.next
   exe 'syn region cucumber'.a:name.'String start=+\%(^\s*\)\@<="""+ end=+"""+ contained'.next
-  exe 'syn match cucumber'.a:name.'Table "\%(^\s*\)\@<=|.*" contained contains=cucumberDelimiter'.next
+  exe 'syn match cucumber'.a:name.'TableHeader  "\%(^\s*\)\@<=|.*" contained contains=cucumberDelimiter'.next_header
+  exe 'syn match cucumber'.a:name.'TableContent "\%(^\s*\)\@<=|.*" contained contains=cucumberDelimiter'.next_header
   exe 'hi def link cucumber'.a:name.'Comment cucumberComment'
   exe 'hi def link cucumber'.a:name.'String cucumberString'
+  exe 'hi def link cucumber'.a:name.'TableHeader cucumberExampleTableHeader'
   exe 'hi def link cucumber'.a:name.'But cucumber'.a:name.'And'
   exe 'hi def link cucumber'.a:name.'And cucumber'.a:name
   exe 'syn cluster cucumberStepRegions add=cucumber'.a:name.'Region,cucumber'.a:name.'AndRegion,cucumber'.a:name.'ButRegion'
@@ -107,32 +110,34 @@ exe 'syn match cucumberFeature "\%(^\s*\)\@<='.s:pattern('feature').':" nextgrou
 exe 'syn match cucumberBackground "\%(^\s*\)\@<='.s:pattern('background').':"'
 exe 'syn match cucumberScenario "\%(^\s*\)\@<='.s:pattern('scenario').':"'
 exe 'syn match cucumberScenarioOutline "\%(^\s*\)\@<='.s:pattern('scenario_outline').':"'
-exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTable skipempty skipwhite'
+exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTableHeader skipempty skipwhite'
 
-syn match   cucumberPlaceholder   "<[^<>]*>" contained containedin=@cucumberStepRegions
-syn match   cucumberExampleTable  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
-syn match   cucumberDelimiter     "\\\@<!\%(\\\\\)*\zs|" contained
-syn match   cucumberTags          "\%(^\s*\)\@<=\%(@[^@[:space:]]\+\s\+\)*@[^@[:space:]]\+\s*$" contains=@NoSpell
+syn match   cucumberPlaceholder          "<[^<>]*>" contained containedin=@cucumberStepRegions
+syn match   cucumberExampleTableHeader   "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter nextgroup=cucumberExampleTableContent skipempty skipwhite
+syn match   cucumberExampleTableContent  "\%(^\s*\)\@<=|.*" contains=cucumberDelimiter
+syn match   cucumberDelimiter            "\\\@<!\%(\\\\\)*\zs|" contained
+syn match   cucumberTags                 "\%(^\s*\)\@<=\%(@[^@[:space:]]\+\s\+\)*@[^@[:space:]]\+\s*$" contains=@NoSpell
 
 call s:Add('Then')
 call s:Add('When')
 call s:Add('Given')
 
-hi def link cucumberUnparsedComment   cucumberComment
-hi def link cucumberComment           Comment
-hi def link cucumberLanguage          SpecialComment
-hi def link cucumberFeature           Macro
-hi def link cucumberBackground        Define
-hi def link cucumberScenario          Define
-hi def link cucumberScenarioOutline   Define
-hi def link cucumberExamples          Define
-hi def link cucumberPlaceholder       Constant
-hi def link cucumberDelimiter         Delimiter
-hi def link cucumberTags              Tag
-hi def link cucumberString            String
-hi def link cucumberGiven             Conditional
-hi def link cucumberWhen              Function
-hi def link cucumberThen              Type
+hi def link cucumberUnparsedComment      cucumberComment
+hi def link cucumberComment              Comment
+hi def link cucumberLanguage             SpecialComment
+hi def link cucumberFeature              Macro
+hi def link cucumberBackground           Define
+hi def link cucumberScenario             Define
+hi def link cucumberScenarioOutline      Define
+hi def link cucumberExamples             Define
+hi def link cucumberExampleTableHeader   Type
+hi def link cucumberPlaceholder          Constant
+hi def link cucumberDelimiter            Delimiter
+hi def link cucumberTags                 Tag
+hi def link cucumberString               String
+hi def link cucumberGiven                Conditional
+hi def link cucumberWhen                 Function
+hi def link cucumberThen                 Type
 
 let b:current_syntax = "cucumber"
 
