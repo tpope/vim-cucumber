@@ -23,14 +23,25 @@ if !exists("b:cucumber_steps_glob")
   let b:cucumber_steps_glob = b:cucumber_root.'/**/*.rb'
 endif
 
+if !exists("g:cucumber_preview_vertical")
+  let g:cucumber_preview_vertical = 0
+endif
+
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
   cnoremap <SID>foldopen <Bar>if &foldopen =~# 'tag'<Bar>exe 'norm! zv'<Bar>endif
   nnoremap <silent> <script> <buffer> [<C-D>      :<C-U>exe <SID>jump('edit',v:count)<SID>foldopen<CR>
   nnoremap <silent> <script> <buffer> ]<C-D>      :<C-U>exe <SID>jump('edit',v:count)<SID>foldopen<CR>
-  nnoremap <silent> <script> <buffer> <C-W>d      :<C-U>exe <SID>jump('split',v:count)<SID>foldopen<CR>
-  nnoremap <silent> <script> <buffer> <C-W><C-D>  :<C-U>exe <SID>jump('split',v:count)<SID>foldopen<CR>
-  nnoremap <silent> <script> <buffer> [d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
-  nnoremap <silent> <script> <buffer> ]d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
+  if g:cucumber_preview_vertical == 1
+    nnoremap <silent> <script> <buffer> <C-W>d      :<C-U>exe <SID>jump('vsplit',v:count)<SID>foldopen<CR>
+    nnoremap <silent> <script> <buffer> <C-W><C-D>  :<C-U>exe <SID>jump('vsplit',v:count)<SID>foldopen<CR>
+    nnoremap <silent> <script> <buffer> [d          :<C-U>exe <SID>jump('pedit',v:count)<CR>:wincmd P<CR>:wincmd L<CR>
+    nnoremap <silent> <script> <buffer> ]d          :<C-U>exe <SID>jump('pedit',v:count)<CR>:wincmd P<CR>:wincmd L<CR>
+  else
+    nnoremap <silent> <script> <buffer> <C-W>d      :<C-U>exe <SID>jump('split',v:count)<SID>foldopen<CR>
+    nnoremap <silent> <script> <buffer> <C-W><C-D>  :<C-U>exe <SID>jump('split',v:count)<SID>foldopen<CR>
+    nnoremap <silent> <script> <buffer> [d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
+    nnoremap <silent> <script> <buffer> ]d          :<C-U>exe <SID>jump('pedit',v:count)<CR>
+  endif
   let b:undo_ftplugin .=
         \ "|sil! nunmap <buffer> [<C-D>" .
         \ "|sil! nunmap <buffer> ]<C-D>" .
