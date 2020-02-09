@@ -75,10 +75,16 @@ function! s:steps(lnum)
     let c = c + 1
   endwhile
   let step = matchstr(getline(a:lnum)[c-1 : -1],'^\s*\zs.\{-\}\ze\s*$')
-  return filter(s:allsteps(),'s:stepmatch(v:val[3],step)')
+  let allsteps = s:allsteps()
+  let vimstepmatch = filter(deepcopy(allsteps),'s:vimstepmatch(v:val[3],step)')
+  if empty(vimstepmatch)
+    return filter(deepcopy(allsteps),'s:rubystepmatch(v:val[3],step)')
+  else
+    return vimstepmatch
+  endif
 endfunction
 
-function! s:stepmatch(receiver,target)
+function! s:vimstepmatch(receiver,target)
   if a:receiver =~ '^[''"].*[''"]$'
     let pattern = '^'.escape(substitute(a:receiver[1:-2],'$\w\+','(.*)','g'),'/').'$'
   elseif a:receiver =~ '^/.*/$'
@@ -88,6 +94,7 @@ function! s:stepmatch(receiver,target)
   else
     return 0
   endif
+
   try
     let vimpattern = substitute(substitute(pattern,'\\\@<!(?:','%(','g'),'\\\@<!\*?','{-}','g')
     if a:target =~# '\v'.vimpattern
@@ -95,6 +102,19 @@ function! s:stepmatch(receiver,target)
     endif
   catch
   endtry
+endfunction
+
+function! s:rubystepmatch(receiver,target)
+  if a:receiver =~ '^[''"].*[''"]$'
+    let pattern = '^'.escape(substitute(a:receiver[1:-2],'$\w\+','(.*)','g'),'/').'$'
+  elseif a:receiver =~ '^/.*/$'
+    let pattern = a:receiver[1:-2]
+  elseif a:receiver =~ '^%r..*.$'
+    let pattern = escape(a:receiver[3:-2],'/')
+  else
+    return 0
+  endif
+
   if has("ruby") && pattern !~ '\\\@<!#{'
     ruby VIM.command("return #{if (begin; Kernel.eval('/'+VIM.evaluate('pattern')+'/'); rescue SyntaxError; end) === VIM.evaluate('a:target') then 1 else 0 end}")
   else
@@ -103,7 +123,7 @@ function! s:stepmatch(receiver,target)
 endfunction
 
 function! s:bsub(target,pattern,replacement)
-  return  substitute(a:target,'\C\\\@<!'.a:pattern,a:replacement,'g')
+  return substitute(a:target,'\C\\\@<!'.a:pattern,a:replacement,'g')
 endfunction
 
 function! CucumberComplete(findstart,base) abort
