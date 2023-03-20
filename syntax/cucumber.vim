@@ -124,12 +124,13 @@ endfunction
 syn match   cucumberComment  "\%(^\s*\)\@<=#.*"
 syn match   cucumberComment  "\%(\%^\s*\)\@<=#.*" contains=cucumberLanguage
 syn match   cucumberLanguage "\%(#\s*\)\@<=language:" contained
-syn match   cucumberUnparsed "\S.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
-syn match   cucumberUnparsedComment "#.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
+syn match   cucumberUnparsed "\S.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberRule,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
+syn match   cucumberUnparsedComment "#.*" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberTags,cucumberBackground,cucumberRule,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty contained
 
-exe 'syn match cucumberFeature "\%(^\s*\)\@<='.s:pattern('feature').':" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberBackground,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty'
+exe 'syn match cucumberFeature "\%(^\s*\)\@<='.s:pattern('feature').':" nextgroup=cucumberUnparsedComment,cucumberUnparsed,cucumberBackground,cucumberRule,cucumberScenario,cucumberScenarioOutline,cucumberExamples skipwhite skipempty'
 exe 'syn match cucumberBackground "\%(^\s*\)\@<='.s:pattern('background').':"'
 exe 'syn match cucumberScenario "\%(^\s*\)\@<='.s:pattern('scenario').':"'
+exe 'syn match cucumberRule "\%(^\s*\)\@<='.s:pattern('rule').':"'
 exe 'syn match cucumberScenarioOutline "\%(^\s*\)\@<='.s:pattern('scenario_outline').':"'
 exe 'syn match cucumberExamples "\%(^\s*\)\@<='.s:pattern('examples').':" nextgroup=cucumberExampleTable skipempty skipwhite'
 
@@ -147,6 +148,7 @@ hi def link cucumberComment           Comment
 hi def link cucumberLanguage          SpecialComment
 hi def link cucumberFeature           Macro
 hi def link cucumberBackground        Define
+hi def link cucumberRule              Define
 hi def link cucumberScenario          Define
 hi def link cucumberScenarioOutline   Define
 hi def link cucumberExamples          Define
