@@ -53,31 +53,49 @@ function! GetCucumberIndent(...) abort
   let sw = shiftwidth()
   let prev = s:Line(prevnonblank(lnum-1))
   let curr = s:Line(lnum)
-  let next = s:Line(nextnonblank(lnum+1))
-  if curr.heading ==# 'feature'
-    " feature heading
+
+  if (curr.tag || curr.comment) && (prev.tag || prev.comment)
+    return prev.indent
+  endif
+
+  let head = prev
+  while head.lnum > 0 && empty(head.heading)
+    let head = s:Line(prevnonblank(head.lnum-1))
+  endwhile
+  if curr.comment && getline(curr.lnum-1) =~# '^\s*$' || curr.tag
+    let next = s:Line(nextnonblank(curr.lnum+1))
+    while next.comment || next.tag
+      let next = s:Line(nextnonblank(next.lnum+1))
+    endwhile
+    " if a comment or tag appears precedes a heading...
+    if !empty(next.heading)
+      " indent it like we would the heading
+      let curr = next
+    endif
+  endif
+
+  if !empty(prev.heading) && empty(curr.heading)
+    " for a non-heading after a heading, increase the indent
+    return prev.indent + sw
+  elseif !empty(curr.heading) && curr.heading ==# head.heading
+    " if the previous section is a peer, match the heading's indent
+    return head.indent
+  elseif curr.heading ==# 'feature'
     return 0
-  elseif curr.heading ==# 'examples'
-    " examples heading
-    return 2 * sw
-  elseif curr.heading ==# 'bg_or_scenario'
-    " background, scenario or outline heading
+  elseif curr.heading ==# 'rule'
     return sw
-  elseif prev.heading ==# 'feature'
-    " line after feature heading
-    return sw
-  elseif prev.heading ==# 'examples'
-    " line after examples heading
-    return 3 * sw
-  elseif prev.heading ==# 'bg_or_scenario'
-    " line after background, scenario or outline heading
-    return 2 * sw
-  elseif (curr.tag || curr.comment) && (next.heading ==# 'feature' || prev.indent <= 0)
-    " tag or comment before a feature heading
+  elseif curr.heading ==# 'bg_or_scenario' && head.heading ==# 'examples'
+    return head.indent - sw
+  elseif (curr.heading ==# 'bg_or_scenario' && head.heading ==# 'rule') || (curr.heading ==# 'examples' && head.heading ==# 'bg_or_scenario')
+    return head.indent + sw
+  elseif (head.heading ==# 'rule' || head.heading ==# 'feature') && !empty(curr.heading)
+    return head.indent + sw
+  elseif curr.tag && empty(head.heading)
     return 0
+  elseif curr.tag && head.heading ==# 'examples'
+    return head.indent - sw
   elseif curr.tag
-    " other tags
-    return sw
+    return head.indent
   elseif (curr.table || curr.comment) && prev.table
     " mid-table
     " preserve indent
@@ -88,9 +106,8 @@ function! GetCucumberIndent(...) abort
   elseif !curr.table && prev.table
     " line after a table, relative unindent
     return prev.indent - sw
-  elseif curr.comment && getline(v:lnum-1) =~# '^\s*$' && next.heading ==# 'bg_or_scenario'
-    " comments on scenarios
-    return sw
+  endif
+
   endif
   return prev.indent < 0 ? 0 : prev.indent
 endfunction
