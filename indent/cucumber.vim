@@ -23,6 +23,22 @@ function! s:syn(lnum)
   return synIDattr(synID(a:lnum,1+indent(a:lnum),1),'name')
 endfunction
 
+" Search if we are under the scope of a rule.
+" Return 1 if there is a rule above the given line number... Till we find a feature heading or the start of the file.
+" Return 0 otherwise.
+function! s:hasRuleAbove(lnum)
+  let lnum = a:lnum
+  let line = getline(lnum)
+  while lnum > 0 && line !~# '^\s*Feature:'
+    if line =~# '^\s*Rule:'
+      return 1
+    endif
+    let lnum -= 1
+    let line = getline(lnum)
+  endwhile
+  return 0
+endfunction
+
 function! GetCucumberIndent()
   let line  = getline(prevnonblank(v:lnum-1))
   let cline = getline(v:lnum)
@@ -31,15 +47,19 @@ function! GetCucumberIndent()
   let syn = s:syn(prevnonblank(v:lnum-1))
   let csyn = s:syn(v:lnum)
   let nsyn = s:syn(nextnonblank(v:lnum+1))
+  let hasRuleAbove = s:hasRuleAbove(v:lnum)
   if csyn ==# 'cucumberFeature' || cline =~# '^\s*Feature:'
     " feature heading
     return 0
+  elseif csyn ==# 'cucumberRule' || cline =~# '^\s*Rule:'
+    " rule heading
+    return sw
   elseif csyn ==# 'cucumberExamples' || cline =~# '^\s*\%(Examples\|Scenarios\):'
     " examples heading
-    return 2 * sw
+    return (hasRuleAbove ? 3 : 2) * sw
   elseif csyn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || cline =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
     " background, scenario or outline heading
-    return sw
+    return (hasRuleAbove ? 2 : 1) * sw
   elseif syn ==# 'cucumberFeature' || line =~# '^\s*Feature:'
     " line after feature heading
     return sw
@@ -48,7 +68,7 @@ function! GetCucumberIndent()
     return 3 * sw
   elseif syn =~# '^cucumber\%(Background\|Scenario\|ScenarioOutline\)$' || line =~# '^\s*\%(Background\|Scenario\|Scenario Outline\):'
     " line after background, scenario or outline heading
-    return 2 * sw
+    return (hasRuleAbove ? 3 : 2) * sw
   elseif cline =~# '^\s*[@#]' && (nsyn == 'cucumberFeature' || nline =~# '^\s*Feature:' || indent(prevnonblank(v:lnum-1)) <= 0)
     " tag or comment before a feature heading
     return 0
