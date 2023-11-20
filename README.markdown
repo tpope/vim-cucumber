@@ -1,7 +1,7 @@
 # vim-cucumber
 
 This is the development version of Vim's included runtime files for the Ruby
-acceptance testing framework [Cucumber](http://cukes.info/). It provides
+acceptance testing framework [Cucumber](https://cucumber.io/). It provides
 syntax highlighting, indenting, and some editing commands.
 
 ## Commands
