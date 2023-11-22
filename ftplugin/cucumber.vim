@@ -20,7 +20,7 @@ let b:undo_ftplugin = "setl fo< com< cms< ofu<"
 
 let b:cucumber_root = expand('%:p:h:s?.*[\/]\%(features\|stories\)\zs[\/].*??')
 if !exists("b:cucumber_steps_glob")
-  let b:cucumber_steps_glob = b:cucumber_root.'/**/*.rb'
+  let b:cucumber_steps_glob = b:cucumber_root.'/**/*.{rb,js}'
 endif
 
 if !exists("g:no_plugin_maps") && !exists("g:no_cucumber_maps")
