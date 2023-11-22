@@ -4,6 +4,8 @@ This is the development version of Vim's included runtime files for the Ruby
 acceptance testing framework [Cucumber](https://cucumber.io/). It provides
 syntax highlighting, indenting, and some editing commands.
 
+This plugin contributes to [vim-polyglot](https://github.com/sheerun/vim-polyglot) language pack.
+
 ## Commands
 
 vim-cucumber provides commands to jump from steps to step definitions in
